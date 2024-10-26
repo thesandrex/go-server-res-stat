@@ -23,8 +23,9 @@ func main() {
 	client := &http.Client{}
 
 	resp := monitorResources(url, client)
+	fmt.Println(resp)
 	statistics := mapResponse(resp)
-
+	fmt.Println(statistics)
 	evaluateStatistics(statistics)
 }
 
@@ -32,8 +33,12 @@ func monitorResources(url string, client *http.Client) string {
 	req, err := http.NewRequest("GET", url, nil)
 	throwError("Error creating request:", err)
 
+	// test
+	// return "22,4904081501,2226235757,484715800471,121890934712,6505107771,6443546090"
+	// return "4,4487416818,2154049342,433187885070,108329746492,1843235704,372722868"
+
 	resp, err := client.Do(req)
-	throwError("Error making request:", err)
+	throwError("Unable to fetch server statistic:", err)
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
@@ -86,26 +91,20 @@ func evaluateStatistics(stats Stat) {
 		fmt.Printf("Load Average is too high: %d\n", stats.LoadAvg)
 	}
 
-	if stats.MemoryAvailable > 0 {
-		memoryUsagePercent := float64(stats.MemoryUsed) / float64(stats.MemoryAvailable) * 100
-		if memoryUsagePercent > 80 {
-			fmt.Printf("Memory usage too high: %.0f%%\n", memoryUsagePercent)
-		}
+	memoryUsagePercent := float64(stats.MemoryUsed) / float64(stats.MemoryAvailable) * 100
+	if memoryUsagePercent > 80 {
+		fmt.Printf("Memory usage too high: %.0f%%\n", memoryUsagePercent)
 	}
 
-	if stats.DiskAvailable > stats.DiskUsed {
-		freeDiskSpace := (stats.DiskAvailable - stats.DiskUsed) / (1024 * 1024) // Остаток в мегабайтах
-		diskUsagePercent := float64(stats.DiskUsed) / float64(stats.DiskAvailable) * 100
-		if diskUsagePercent > 90 {
-			fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskSpace)
-		}
+	freeDiskSpace := (stats.DiskAvailable - stats.DiskUsed) / (1024 * 1024) // Остаток в мегабайтах
+	diskUsagePercent := float64(stats.DiskUsed) / float64(stats.DiskAvailable) * 100
+	if diskUsagePercent > 90 {
+		fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskSpace)
 	}
 
-	if stats.NetworkLoadAvailable > 0 {
-		networkUsagePercent := float64(stats.NetworkLoadUsed) / float64(stats.NetworkLoadAvailable) * 100
-		if networkUsagePercent > 90 {
-			freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) * 8 / (1024 * 1024) // Свободная полоса в мегабитах
-			fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeNetworkBandwidth)
-		}
+	networkUsagePercent := float64(stats.NetworkLoadUsed) / float64(stats.NetworkLoadAvailable) * 100
+	if networkUsagePercent > 90 {
+		freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) * 8 / (1024 * 1024) // Свободная полоса в мегабитах
+		fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeNetworkBandwidth)
 	}
 }
