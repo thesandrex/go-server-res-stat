@@ -34,10 +34,7 @@ func monitorResources(url string, client *http.Client) string {
 
 	resp, err := client.Do(req)
 	throwError("Error making request:", err)
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		throwError("Error closing body:", err)
-	}(resp.Body)
+	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	throwError("Error reading response body:", err)
