@@ -94,7 +94,7 @@ func evaluateStatistics(stats Stat) {
 	}
 
 	if stats.DiskAvailable > stats.DiskUsed {
-		freeDiskSpace := (stats.DiskAvailable - stats.DiskUsed) / (1024 * 1024) // остаток в мегабайтах
+		freeDiskSpace := (stats.DiskAvailable - stats.DiskUsed) / (1024 * 1024) // Остаток в мегабайтах
 		diskUsagePercent := float64(stats.DiskUsed) / float64(stats.DiskAvailable) * 100
 		if diskUsagePercent > 90 {
 			fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskSpace)
@@ -104,7 +104,7 @@ func evaluateStatistics(stats Stat) {
 	if stats.NetworkLoadAvailable > 0 {
 		networkUsagePercent := float64(stats.NetworkLoadUsed) / float64(stats.NetworkLoadAvailable) * 100
 		if networkUsagePercent > 90 {
-			freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) * 8 / (1024 * 1024) // свободная полоса в мегабитах
+			freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) * 8 / (1024 * 1024) // Свободная полоса в мегабитах
 			fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeNetworkBandwidth)
 		}
 	}
