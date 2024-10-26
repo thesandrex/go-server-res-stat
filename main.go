@@ -82,48 +82,30 @@ func convertValues(parts []string) []uint64 {
 }
 
 func evaluateStatistics(stats Stat) {
-
 	if stats.LoadAvg > 30 {
 		fmt.Printf("Load Average is too high: %d\n", stats.LoadAvg)
-	} else {
-		fmt.Printf("Load Average is within safe limits: %d\n", stats.LoadAvg)
 	}
-
-	fmt.Printf("Memory Available: %d bytes\n", stats.MemoryAvailable)
-	fmt.Printf("Memory Used: %d bytes\n", stats.MemoryUsed)
 
 	if stats.MemoryAvailable > 0 {
 		memoryUsagePercent := float64(stats.MemoryUsed) / float64(stats.MemoryAvailable) * 100
 		if memoryUsagePercent > 80 {
-			fmt.Printf("Memory usage too high: %.2f%%\n", memoryUsagePercent)
-		} else {
-			fmt.Printf("Memory usage is within safe limits: %.2f%%\n", memoryUsagePercent)
+			fmt.Printf("Memory usage too high: %.0f%%\n", memoryUsagePercent)
 		}
 	}
-
-	fmt.Printf("Disk Available: %d bytes\n", stats.DiskAvailable)
-	fmt.Printf("Disk Used: %d bytes\n", stats.DiskUsed)
 
 	if stats.DiskAvailable > stats.DiskUsed {
 		freeDiskSpace := (stats.DiskAvailable - stats.DiskUsed) / (1024 * 1024) // остаток в мегабайтах
 		diskUsagePercent := float64(stats.DiskUsed) / float64(stats.DiskAvailable) * 100
 		if diskUsagePercent > 90 {
-			fmt.Printf("Free disk space is too low: %d MB left\n", freeDiskSpace)
-		} else {
-			fmt.Printf("Disk usage is within safe limits: %.2f%%\n", diskUsagePercent)
+			fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskSpace)
 		}
 	}
-
-	fmt.Printf("Network Bandwidth Available: %d bytes/sec\n", stats.NetworkLoadAvailable)
-	fmt.Printf("Network Bandwidth Used: %d bytes/sec\n", stats.NetworkLoadUsed)
 
 	if stats.NetworkLoadAvailable > 0 {
 		networkUsagePercent := float64(stats.NetworkLoadUsed) / float64(stats.NetworkLoadAvailable) * 100
 		if networkUsagePercent > 90 {
 			freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) * 8 / (1024 * 1024) // свободная полоса в мегабитах
 			fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeNetworkBandwidth)
-		} else {
-			fmt.Printf("Network bandwidth usage is within safe limits: %.2f%%\n", networkUsagePercent)
 		}
 	}
 }
