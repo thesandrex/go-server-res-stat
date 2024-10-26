@@ -34,8 +34,7 @@ func monitorResources(url string, client *http.Client) string {
 	throwError("Error creating request:", err)
 
 	// test
-	// return "22,4904081501,2226235757,484715800471,121890934712,6505107771,6443546090"
-	// return "3,4973030119,4322636569,331963281376,71548907549,1850323696,455050433"
+	// return "12,4819661917,2328437675,469781716496,97858919593,1315809605,1245267076"
 
 	resp, err := client.Do(req)
 	throwError("Unable to fetch server statistic:", err)
@@ -104,7 +103,7 @@ func evaluateStatistics(stats Stat) {
 
 	networkUsagePercent := float64(stats.NetworkLoadUsed) / float64(stats.NetworkLoadAvailable) * 100
 	if networkUsagePercent > 90 {
-		freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) * 8 / (1024 * 1024) // Свободная полоса в мегабитах
+		freeNetworkBandwidth := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) / 1000000 // Свободная полоса в мегабитах
 		fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeNetworkBandwidth)
 	}
 }
