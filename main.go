@@ -23,9 +23,9 @@ func main() {
 	client := &http.Client{}
 
 	resp := monitorResources(url, client)
-	fmt.Println(resp)
+	// fmt.Println(resp)
 	statistics := mapResponse(resp)
-	fmt.Println(statistics)
+	// fmt.Println(statistics)
 	evaluateStatistics(statistics)
 }
 
@@ -35,7 +35,7 @@ func monitorResources(url string, client *http.Client) string {
 
 	// test
 	// return "22,4904081501,2226235757,484715800471,121890934712,6505107771,6443546090"
-	// return "4,4487416818,2154049342,433187885070,108329746492,1843235704,372722868"
+	// return "3,4973030119,4322636569,331963281376,71548907549,1850323696,455050433"
 
 	resp, err := client.Do(req)
 	throwError("Unable to fetch server statistic:", err)
