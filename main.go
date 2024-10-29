@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Stat struct {
@@ -22,11 +23,15 @@ func main() {
 	url := "http://srv.msk01.gigacorp.local/_stats"
 	client := &http.Client{}
 
-	resp := monitorResources(url, client)
-	// fmt.Println(resp)
-	statistics := mapResponse(resp)
-	// fmt.Println(statistics)
-	evaluateStatistics(statistics)
+	for {
+		resp := monitorResources(url, client)
+		// fmt.Println(resp)
+		statistics := mapResponse(resp)
+		// fmt.Println(statistics)
+		evaluateStatistics(statistics)
+
+		time.Sleep(5 * time.Second)
+	}
 }
 
 func monitorResources(url string, client *http.Client) string {
