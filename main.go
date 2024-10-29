@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -88,23 +87,23 @@ func convertValues(parts []string) []uint64 {
 
 func evaluateStatistics(stats Stat) {
 	if stats.LoadAvg > 30.0 {
-		fmt.Printf("Load Average is too high: %.0f\n", float64(stats.LoadAvg))
+		fmt.Printf("Load Average is too high: %d\n", stats.LoadAvg)
 	}
 
 	memUsage := (stats.MemoryUsed / stats.MemoryAvailable) * 100
 	if memUsage > 80.0 {
-		fmt.Printf("Memory usage too high: %.0f%%\n", math.Floor(float64(memUsage)))
+		fmt.Printf("Memory usage too high: %d\n", memUsage)
 	}
 
 	freeDisk := (stats.DiskAvailable - stats.DiskUsed) / (1024 * 1024) // байты -> мегабайты
 	diskUsage := (stats.DiskUsed / stats.DiskAvailable) * 100
 	if diskUsage > 90.0 {
-		fmt.Printf("Free disk space is too low: %.0f Mb left\n", math.Floor(float64(freeDisk)))
+		fmt.Printf("Free disk space is too low: %d Mb left\n", freeDisk)
 	}
 
 	freeNet := (stats.NetworkLoadAvailable - stats.NetworkLoadUsed) / (1000 * 1000)
 	netUsage := (stats.NetworkLoadUsed / stats.NetworkLoadAvailable) * 100
 	if netUsage > 90.0 {
-		fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", math.Round(float64(freeNet)))
+		fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", freeNet)
 	}
 }
