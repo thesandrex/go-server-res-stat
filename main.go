@@ -88,7 +88,7 @@ func convertValues(parts []string) []uint64 {
 
 func evaluateStatistics(stats Stat) {
 	if stats.LoadAvg > 30.0 {
-		fmt.Printf("Load Average is too high: %.0f\n", stats.LoadAvg)
+		fmt.Printf("Load Average is too high: %.0f\n", float64(stats.LoadAvg))
 	}
 
 	memUsage := (stats.MemoryUsed / stats.MemoryAvailable) * 100
